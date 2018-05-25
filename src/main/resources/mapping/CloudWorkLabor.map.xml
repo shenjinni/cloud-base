@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.testin.dao.CloudWorkLaborMapper">
+	<resultMap id="CloudWorkLabor" type="cn.testin.bean.CloudWorkLabor">
+		<id property="id" column="id" jdbcType="NUMERIC"/>
+		<result property="workNeed" column="work_need" jdbcType="VARCHAR"/>
+		<result property="contactsName" column="contacts_name" jdbcType="VARCHAR"/>
+		<result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+		<result property="address" column="address" jdbcType="VARCHAR"/>
+		<result property="factoryName" column="factory_name" jdbcType="VARCHAR"/>
+		<result property="number" column="number" jdbcType="VARCHAR"/>
+		<result property="note" column="note" jdbcType="VARCHAR"/>
+		<result property="salary" column="salary" jdbcType="VARCHAR"/>
+		<result property="status" column="status" jdbcType="NUMERIC"/>
+		<result property="createUser" column="create_user" jdbcType="NUMERIC"/>
+		<result property="createTime" column="create_time" jdbcType="DATE"/>
+		<result property="updateTime" column="update_time" jdbcType="DATE"/>
+		<result property="updateUser" column="update_user" jdbcType="NUMERIC"/>
+		<result property="weights" column="weights" jdbcType="NUMERIC"/>
+		<result property="validityTime" column="validity_time" jdbcType="DATE"/>
+	</resultMap>
+
+	<sql id="columns">
+		id,work_need,contacts_name,mobile,address,factory_name,number,note,salary,status,create_user,create_time,update_time,update_user
+	</sql>
+
+	<insert id="insertSelective" parameterType="cn.testin.bean.CloudWorkLabor">
+				INSERT INTO cloud_work_labor
+		(id,work_need,contacts_name,mobile,address,factory_name,number,note,salary,status,create_user,create_time,update_time,update_user)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{workNeed,jdbcType=VARCHAR}, #{contactsName,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{factoryName,jdbcType=VARCHAR}, #{number,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, #{salary,jdbcType=VARCHAR}, #{status,jdbcType=NUMERIC}, #{createUser,jdbcType=NUMERIC}, #{createTime,jdbcType=DATE}, #{updateTime,jdbcType=DATE}, #{updateUser,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		DELETE FROM cloud_work_labor 
+		WHERE
+		id=#{id}
+	</delete>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="cn.testin.bean.CloudWorkLabor">
+		UPDATE cloud_work_labor SET
+		work_need=#{workNeed,jdbcType=VARCHAR},
+		contacts_name=#{contactsName,jdbcType=VARCHAR},
+		mobile=#{mobile,jdbcType=VARCHAR},
+		address=#{address,jdbcType=VARCHAR},
+		factory_name=#{factoryName,jdbcType=VARCHAR},
+		number=#{number,jdbcType=VARCHAR},
+		note=#{note,jdbcType=VARCHAR},
+		salary=#{salary,jdbcType=VARCHAR},
+		status=#{status,jdbcType=NUMERIC},
+		update_time=#{updateTime,jdbcType=DATE},
+		update_user=#{updateUser,jdbcType=NUMERIC}
+		WHERE
+		id=#{id}
+	</update>
+		    
+	<select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="CloudWorkLabor">
+		SELECT <include refid="columns"/>
+		FROM cloud_work_labor
+		WHERE
+		id=#{id}
+	</select>
+
+	<select id="selectList" resultMap="CloudWorkLabor" parameterType="cn.testin.bean.CloudWorkLabor" >
+		select
+		cloud_work_labor.*,cloud_work_vip.weights weights,cloud_work_vip.validity_time validity_time
+		from cloud_work_labor
+		left join cloud_work_vip on cloud_work_vip.work_id = cloud_work_labor.id and cloud_work_vip.work_type=3
+		<if test="validityTime != null" >
+			AND cloud_work_vip.validity_time &gt;= #{validityTime,jdbcType=DATE}
+		</if>
+		where
+		<choose>
+			<when test="searchText != null  and searchText != ''">
+				(cloud_work_labor.work_need like concat('%',#{searchText,jdbcType=VARCHAR},'%')
+				or cloud_work_labor.contacts_name like concat('%',#{searchText,jdbcType=VARCHAR},'%')
+				or cloud_work_labor.mobile like concat('%',#{searchText,jdbcType=VARCHAR},'%'))
+				<if test="status != null  and status != ''" >
+					and cloud_work_labor.status = #{status,jdbcType=NUMERIC}
+				</if>
+				<if test="createUser != null  and createUser != ''" >
+					and cloud_work_labor.create_user = #{createUser,jdbcType=NUMERIC}
+				</if>
+			</when>
+			<otherwise>
+				1=1
+				<if test="workNeed != null  and workNeed != ''" >
+					and cloud_work_labor.work_need like concat('%',#{workNeed,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="contactsName != null  and contactsName != ''" >
+					and cloud_work_labor.contacts_name like concat('%',#{contactsName,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="mobile != null  and mobile != ''" >
+					and cloud_work_labor.mobile like concat('%',#{mobile,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="status != null  and status != ''" >
+					and cloud_work_labor.status = #{status,jdbcType=NUMERIC}
+				</if>
+				<if test="createUser != null  and createUser != ''" >
+					and cloud_work_labor.create_user = #{createUser,jdbcType=NUMERIC}
+				</if>
+			</otherwise>
+		</choose>
+
+		<choose>
+			<when test="sortName != null and orderName != null " >
+				<choose>
+					<when test="sortName == 'weights' or sortName == 'validity_time'" >
+						order by cloud_work_vip.${sortName} ${orderName}
+					</when>
+					<otherwise>
+						order by cloud_work_labor.${sortName} ${orderName}
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				order by cloud_work_labor.update_time desc
+			</otherwise>
+		</choose>
+
+
+		<if test="offset != null and limit != null ">
+			limit #{offset,jdbcType=INTEGER}, #{limit,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="selectCount" parameterType="cn.testin.bean.CloudWorkLabor" resultType="int">
+		SELECT
+		count(*)
+		from cloud_work_labor
+		left join cloud_work_vip on cloud_work_vip.work_id = cloud_work_labor.id and cloud_work_vip.work_type=3 <if test="validityTime != null" >
+			AND cloud_work_vip.validity_time &gt;= #{validityTime,jdbcType=DATE}
+		</if>
+		where
+		<choose>
+			<when test="searchText != null  and searchText != ''">
+				(cloud_work_labor.work_need like concat('%',#{searchText,jdbcType=VARCHAR},'%')
+				or cloud_work_labor.contacts_name like concat('%',#{searchText,jdbcType=VARCHAR},'%')
+				or cloud_work_labor.mobile like concat('%',#{searchText,jdbcType=VARCHAR},'%'))
+				<if test="status != null  and status != ''" >
+					and cloud_work_labor.status = #{status,jdbcType=NUMERIC}
+				</if>
+				<if test="createUser != null  and createUser != ''" >
+					and cloud_work_labor.create_user = #{createUser,jdbcType=NUMERIC}
+				</if>
+			</when>
+			<otherwise>
+				1=1
+				<if test="workNeed != null  and workNeed != ''" >
+					and cloud_work_labor.work_need like concat('%',#{workNeed,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="contactsName != null  and contactsName != ''" >
+					and cloud_work_labor.contacts_name like concat('%',#{contactsName,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="mobile != null  and mobile != ''" >
+					and cloud_work_labor.mobile like concat('%',#{mobile,jdbcType=VARCHAR},'%')
+				</if>
+				<if test="status != null  and status != ''" >
+					and cloud_work_labor.status = #{status,jdbcType=NUMERIC}
+				</if>
+				<if test="createUser != null  and createUser != ''" >
+					and cloud_work_labor.create_user = #{createUser,jdbcType=NUMERIC}
+				</if>
+			</otherwise>
+		</choose>
+	</select>
+</mapper>
