@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.testin.dao.AdvertisementMapper" >
-  <resultMap id="BaseResultMap" type="cn.testin.bean.Advertisement" >
+<mapper namespace="cn.sjn.dao.AdvertisementMapper" >
+  <resultMap id="BaseResultMap" type="cn.sjn.bean.Advertisement" >
     <id column="ad_id" property="adId" jdbcType="BIGINT" />
     <result column="ad_title" property="adTitle" jdbcType="VARCHAR" />
     <result column="ad_location" property="adLocation" jdbcType="VARCHAR" />
@@ -27,7 +27,7 @@
     delete from qhc_advertisement
     where ad_id = #{adId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="cn.testin.bean.Advertisement" >
+  <insert id="insert" parameterType="cn.sjn.bean.Advertisement" >
     insert into qhc_advertisement (ad_id, ad_title, ad_location, 
       ad_image, publish_time, end_time, 
       sort, ad_url, ad_status, 
@@ -37,7 +37,7 @@
       #{sort,jdbcType=VARCHAR}, #{adUrl,jdbcType=VARCHAR}, #{adStatus,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="cn.testin.bean.Advertisement" >
+  <insert id="insertSelective" parameterType="cn.sjn.bean.Advertisement" >
     insert into qhc_advertisement
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="adId != null" >
@@ -104,7 +104,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.testin.bean.Advertisement" >
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sjn.bean.Advertisement" >
     update qhc_advertisement
     <set >
       <if test="adTitle != null" >
@@ -137,7 +137,7 @@
     </set>
     where ad_id = #{adId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.testin.bean.Advertisement" >
+  <update id="updateByPrimaryKey" parameterType="cn.sjn.bean.Advertisement" >
     update qhc_advertisement
     set ad_title = #{adTitle,jdbcType=VARCHAR},
       ad_location = #{adLocation,jdbcType=VARCHAR},
@@ -159,7 +159,7 @@
     order by sort ASC
   </select>
   
-  <select id="selectList" parameterType="cn.testin.bean.Advertisement" resultMap="BaseResultMap">
+  <select id="selectList" parameterType="cn.sjn.bean.Advertisement" resultMap="BaseResultMap">
 		SELECT
 			<include refid="Base_Column_List" />
 		FROM
@@ -180,7 +180,7 @@
 		</if>
 	</select>
 	
-	<select id="selectCount" parameterType="cn.testin.bean.Advertisement" resultType="int">
+	<select id="selectCount" parameterType="cn.sjn.bean.Advertisement" resultType="int">
 		SELECT
 			count(*)
 		FROM

@@ -39,7 +39,7 @@
     </bean>  
 
 	<!-- 配置使用自定义认证器，可以实现多Realm认证，并且可以指定特定Realm处理特定类型的验证 -->
-    <bean id="modularRealmAuthenticator" class="cn.testin.shiro.CustomizedModularRealmAuthenticator">
+    <bean id="modularRealmAuthenticator" class="cn.sjn.shiro.CustomizedModularRealmAuthenticator">
         <!-- 配置认证策略，只要有一个Realm认证成功即可，并且返回所有认证成功信息 -->
         <property name="authenticationStrategy">
             <bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>
@@ -124,7 +124,7 @@
     </bean>  
   	
   	
-  	<bean id="roleOrFilter" class="cn.testin.filter.CustomRolesAuthorizationFilter" />
+  	<bean id="roleOrFilter" class="cn.sjn.filter.CustomRolesAuthorizationFilter" />
   	
   	<!-- <bean id="systemLogoutFilter" class="com.casic.qhc.filter.SystemLogoutFilter" /> -->  
     <!--   

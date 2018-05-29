@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.testin.dao.UserRoleMapper" >
-  <resultMap id="BaseResultMap" type="cn.testin.bean.UserRole" >
+<mapper namespace="cn.sjn.dao.UserRoleMapper" >
+  <resultMap id="BaseResultMap" type="cn.sjn.bean.UserRole" >
     <id column="id" property="id" jdbcType="BIGINT" />
     <result column="user_id" property="userId" jdbcType="BIGINT" />
     <result column="role_id" property="roleId" jdbcType="BIGINT" />
@@ -22,13 +22,13 @@
     delete from qhc_user_role
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="cn.testin.bean.UserRole" >
+  <insert id="insert" parameterType="cn.sjn.bean.UserRole" >
     insert into qhc_user_role (id, user_id, role_id,validity_time
       )
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT}, #{validityTime,jdbcType=DATE}
       )
   </insert>
-  <insert id="insertSelective" parameterType="cn.testin.bean.UserRole" >
+  <insert id="insertSelective" parameterType="cn.sjn.bean.UserRole" >
     insert into qhc_user_role
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -59,7 +59,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.testin.bean.UserRole" >
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sjn.bean.UserRole" >
     update qhc_user_role
     <set >
       <if test="userId != null" >
@@ -74,7 +74,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.testin.bean.UserRole" >
+  <update id="updateByPrimaryKey" parameterType="cn.sjn.bean.UserRole" >
     update qhc_user_role
     set user_id = #{userId,jdbcType=BIGINT},
       role_id = #{roleId,jdbcType=BIGINT},
@@ -82,7 +82,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
   
-  <select id="selectList" parameterType="cn.testin.bean.UserRole" resultMap="BaseResultMap">
+  <select id="selectList" parameterType="cn.sjn.bean.UserRole" resultMap="BaseResultMap">
 		SELECT
 			*
 		FROM
@@ -95,7 +95,7 @@
 			and role_id = #{roleId,jdbcType=BIGINT}
 		</if>
 	</select>
-	<update id="updateUserRoleByUserId" parameterType="cn.testin.bean.UserRole">
+	<update id="updateUserRoleByUserId" parameterType="cn.sjn.bean.UserRole">
 		update qhc_user_role
     	set role_id = #{roleId,jdbcType=BIGINT},
     	validity_time = #{validityTime,jdbcType=DATE}

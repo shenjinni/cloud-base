@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="cn.testin.dao.ArticleMapper" >
-  <resultMap id="BaseResultMap" type="cn.testin.bean.Article" >
+<mapper namespace="cn.sjn.dao.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="cn.sjn.bean.Article" >
     <id column="article_id" property="articleId" jdbcType="BIGINT" />
     <result column="article_title" property="articleTitle" jdbcType="VARCHAR" />
     <result column="article_source" property="articleSource" jdbcType="VARCHAR" />
@@ -29,7 +29,7 @@
     delete from qhc_article
     where article_id = #{articleId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="cn.testin.bean.Article" >
+  <insert id="insert" parameterType="cn.sjn.bean.Article" >
     insert into qhc_article (article_id, article_title, article_source, article_type, 
       article_image, article_brief, article_sort, 
       article_url, article_code, exhibition_date, 
@@ -39,7 +39,7 @@
       #{articleUrl,jdbcType=VARCHAR}, #{articleCode,jdbcType=VARCHAR}, #{exhibitionDate,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{articleContent,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="cn.testin.bean.Article" >
+  <insert id="insertSelective" parameterType="cn.sjn.bean.Article" >
     insert into qhc_article
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="articleId != null" >
@@ -118,7 +118,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.testin.bean.Article" >
+  <update id="updateByPrimaryKeySelective" parameterType="cn.sjn.bean.Article" >
     update qhc_article
     <set >
       <if test="articleTitle != null" >
@@ -157,7 +157,7 @@
     </set>
     where article_id = #{articleId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="cn.testin.bean.Article" >
+  <update id="updateByPrimaryKey" parameterType="cn.sjn.bean.Article" >
     update qhc_article
     set article_title = #{articleTitle,jdbcType=VARCHAR},
       article_source = #{articleSource,jdbcType=VARCHAR},
@@ -180,7 +180,7 @@
     order by create_time DESC
     limit 0,#{count,jdbcType=NUMERIC}
   </select>
-  <select id="selectList" resultMap="BaseResultMap" parameterType="cn.testin.bean.Article" >
+  <select id="selectList" resultMap="BaseResultMap" parameterType="cn.sjn.bean.Article" >
   	select 
     <include refid="Base_Column_List" />
     from qhc_article
@@ -203,7 +203,7 @@
 		from qhc_article
 	</select>
 
-  <select id="getNewsApp" parameterType="cn.testin.bean.PageBean" resultType="java.util.Map">
+  <select id="getNewsApp" parameterType="cn.sjn.bean.PageBean" resultType="java.util.Map">
 	  select
 	  	CAST(article_id AS CHAR) as articleId,
 	  	article_title as articleTitle,
@@ -233,7 +233,7 @@
 	  where article_id = #{newsId,jdbcType=BIGINT}
   </select>
   
-  <select id="selectCount" parameterType="cn.testin.bean.Article" resultType="int">
+  <select id="selectCount" parameterType="cn.sjn.bean.Article" resultType="int">
 		SELECT
 			count(*)
 		FROM
